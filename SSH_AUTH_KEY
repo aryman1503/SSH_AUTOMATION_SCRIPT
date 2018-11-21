@@ -1,0 +1,33 @@
+#!bin/bash
+
+#WELCOME line
+echo "\n\n\t\t\t\t START THE SETUP\n\n\n"
+
+#install ssh 
+sudo apt install ssh
+sudo service ssh status
+sudo service ssh start
+sudo systemctl restart ssh
+sudo systemctl enable ssh
+
+#Creating SSH key in local host machine
+echo -e "\n\n\n y" | ssh-keygen 
+
+# Enter server details
+echo "\nEnter the host name of server you want ::: "
+read host
+echo "\nEnter the IP address of server you want ::: "
+read ip
+echo "Server you select $host@$ip"
+
+# Connecting to server
+sudo ssh-copy-id -f $host'@'$ip
+
+#Password authentication no
+sudo echo "PasswordAuthentication no" >> /etc/ssh/ssh_config
+
+# Restarting this
+sudo systemctl restart sshd
+sudo systemctl enable sshd
+
+echo "-- READY TO WORK --"
